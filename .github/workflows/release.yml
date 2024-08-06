@@ -29,4 +29,4 @@ jobs:
           artifactErrorsFailBuild: true
           allowUpdates: true
           removeArtifacts: true
-          artifacts: "distributions/*.tag.gz"
+          artifacts: "distributions/*.tar.gz"
