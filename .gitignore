@@ -1,0 +1,13 @@
+bin/
+distributions/
+.tool-versions
+
+# Reports
+*.out
+build/
+junit-report.xml
+coverage.html
+
+#
+internal/**/go.sum
+.cache/

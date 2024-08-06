@@ -1,0 +1,69 @@
+#file: noinspection SpellCheckingInspection
+run:
+  concurrency: 4
+
+# https://golangci-lint.run/usage/configuration/#linters-configuration
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - asasalint
+    - bodyclose
+    - containedctx
+    - contextcheck
+    - cyclop
+    - dogsled
+    - errname
+    - errorlint
+    - exhaustive
+    - exportloopref
+    - forbidigo
+    - funlen
+    - gocritic
+    - gocyclo
+    - err113
+    - goimports
+    - mnd
+    - gomoddirectives
+    - gosec
+    - govet
+    - grouper
+    - misspell
+    - nilerr
+    - nlreturn
+    - noctx
+    - nolintlint
+    - prealloc
+    - predeclared
+    - promlinter
+    - revive
+    - wastedassign
+    - tagliatelle
+    - tenv
+    - testpackage
+    - typecheck
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - varnamelen
+    - whitespace
+    # TODO    - wrapcheck
+    - wsl
+    - ginkgolinter
+    - interfacebloat
+
+linters-settings:
+  gosec:
+    exclude-generated: true
+    severity: medium
+  varnamelen:
+    ignore-type-assert-ok: true
+    ignore-map-index-ok: true
+    ignore-names:
+      - db
+      - err

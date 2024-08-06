@@ -1,0 +1,25 @@
+= SDK Manager
+:icons: font
+
+== Install
+
+. Unpack to any directory.
+For example, in `$HOME/.sdkm/` (further this path in the documentation will be referred to as
+`SDKM_HOME`)
+. (Optional) Add the path to `$SDKM_HOME` to `PATH` - if you use hooks, this will be done automatically
+. Unpack scripts for shims: `./sdkm reshim`
+. Enjoy icon:smile-o[]
+
+== Terminal hooks
+
+. ZSH
++
+It is necessary to add the line `source $SDKM_HOME/hook.zsh` to `~/.zshrc`
+
+. Bash
++
+It is necessary to add the line `source $SDKM_HOME/hook.bash` to `~/.bashrc`
+
+== Caching available versions
+
+To optimize the number of requests, the application caches the list of received SDK versions in `$SDKM_HOME/.cache` for a day

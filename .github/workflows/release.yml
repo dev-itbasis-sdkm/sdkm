@@ -1,0 +1,32 @@
+name: Releases
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_run:
+    workflows: ["Tests"]
+    types: [completed]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - run: make go-multiple-os-distributions version="${{github.ref_name}}"
+
+      - name: Make release
+        uses: ncipollo/release-action@v1
+        with:
+          artifactErrorsFailBuild: true
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: "distributions/*.tag.gz"
