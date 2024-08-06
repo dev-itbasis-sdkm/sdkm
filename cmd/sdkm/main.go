@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	l := slog.New(
+	logger := slog.New(
 		prettylog.New(
 			&slog.HandlerOptions{Level: slog.LevelDebug},
 			prettylog.WithDestinationWriter(os.Stdout),
 			prettylog.WithColor(),
 		),
 	)
-	slog.SetDefault(l)
+	slog.SetDefault(logger)
 
 	_ = root.CmdRoot.Execute()
 }

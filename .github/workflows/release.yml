@@ -4,11 +4,11 @@ on:
   push:
     tags:
       - '*'
-  workflow_run:
-    workflows: ["Tests"]
-    types: [completed]
 
 jobs:
+  tests:
+    uses: ./.github/workflows/test.yml
+
   release:
     runs-on: ubuntu-latest
     permissions:
