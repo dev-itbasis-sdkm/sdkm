@@ -8,9 +8,9 @@ before-reports:
 	rm -Rf "${REPORTS_DIR}"/*
 
 go-dependencies:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-	go install github.com/onsi/ginkgo/v2/ginkgo@latest
-	go install go.uber.org/mock/mockgen@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
+	go install github.com/onsi/ginkgo/v2/ginkgo@v2.20.0
+	go install go.uber.org/mock/mockgen@v0.4.0
 
 go-update: go-dependencies
 	go mod tidy && go get -t -v -u ./...
