@@ -16,7 +16,7 @@ jobs:
           go-version: 'stable'
       - run: go mod tidy && git diff --exit-code go.mod go.sum
 
-  test-matrix:
+  test:
     runs-on: ubuntu-latest
 
     steps:
