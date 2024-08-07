@@ -9,7 +9,7 @@ var _ = ginkgo.Describe(
 	"scripts", func() {
 		defer ginkgo.GinkgoRecover()
 
-		gomega.Expect(scripts.ReadDir(".")).Should(
+		gomega.Expect(scripts.ReadDir(".")).To(
 			gomega.HaveLen(3),
 		)
 	},

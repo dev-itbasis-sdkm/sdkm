@@ -1,4 +1,4 @@
-package root
+package sdkm
 
 import (
 	"github.com/spf13/cobra"

@@ -1,4 +1,4 @@
-package root
+package sdkm
 
 import (
 	"os"
@@ -12,7 +12,7 @@ import (
 var cmdInstall = &cobra.Command{
 	Use:        "install [" + strings.Join(sdkmPlugins.PluginNames, "|") + "] [<version>]",
 	Short:      "Install the SDK",
-	Args:       cobra.MatchAll(cobra.RangeArgs(1, 2), cobra.OnlyValidArgs), //nolint:mnd //
+	Args:       cobra.MatchAll(cobra.RangeArgs(1, 2), cobra.OnlyValidArgs), //nolint:mnd // TODO
 	ArgAliases: []string{"plugin", "version"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		getPluginFunc, ok := sdkmPlugins.Plugins[args[0]]
@@ -23,11 +23,11 @@ var cmdInstall = &cobra.Command{
 
 		sdkmPlugin := getPluginFunc()
 
-		//nolint:mnd //
+		//nolint:mnd // TODO
 		if len(args) == 2 {
-			return sdkmPlugin.InstallVersion(cmd.Context(), args[1]) //nolint:wrapcheck
+			return sdkmPlugin.InstallVersion(cmd.Context(), args[1]) //nolint:wrapcheck // TODO
 		}
 
-		return sdkmPlugin.Install(cmd.Context(), sdkmOs.Pwd()) //nolint:wrapcheck
+		return sdkmPlugin.Install(cmd.Context(), sdkmOs.Pwd()) //nolint:wrapcheck // TODO
 	},
 }

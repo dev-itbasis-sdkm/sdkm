@@ -1,4 +1,4 @@
-package root
+package sdkm
 
 import (
 	"github.com/dev.itbasis.sdkm/internal/version"
@@ -6,14 +6,14 @@ import (
 )
 
 var (
-	CmdRoot = &cobra.Command{
+	cmdRoot = &cobra.Command{
 		Version: version.BuildVersion(),
 		Short:   "SDK Manager",
 	}
 )
 
 func init() {
-	CmdRoot.AddCommand(
+	cmdRoot.AddCommand(
 		cmdPlugins,
 		cmdList,
 		cmdLatest,

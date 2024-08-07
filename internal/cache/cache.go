@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
 type sdkVersions struct {
@@ -14,28 +14,30 @@ type sdkVersions struct {
 	sdkVersions sync.Map
 }
 
-func NewCacheSDKVersions() sdkmPlugin.SDKVersionsCache {
+func NewCacheSDKVersions() sdkmSDKVersion.SDKVersionsCache {
 	return &sdkVersions{}
 }
 
-func (receiver *sdkVersions) WithFile(filePath string) sdkmPlugin.SDKVersionsCache {
+func (receiver *sdkVersions) WithFile(filePath string) sdkmSDKVersion.SDKVersionsCache {
 	receiver.filePath = filePath
 	receiver.loadFromFile()
 
 	return receiver
 }
 
-func (receiver *sdkVersions) Load(_ context.Context, versionType sdkmPlugin.VersionType) []sdkmPlugin.SDKVersion {
+func (receiver *sdkVersions) Load(
+	_ context.Context, versionType sdkmSDKVersion.VersionType,
+) []sdkmSDKVersion.SDKVersion {
 	value, ok := receiver.sdkVersions.Load(versionType)
 	if !ok {
-		return []sdkmPlugin.SDKVersion{}
+		return []sdkmSDKVersion.SDKVersion{}
 	}
 
-	return value.([]sdkmPlugin.SDKVersion)
+	return value.([]sdkmSDKVersion.SDKVersion)
 }
 
 func (receiver *sdkVersions) Store(
-	ctx context.Context, versionType sdkmPlugin.VersionType, sdkVersions []sdkmPlugin.SDKVersion,
+	ctx context.Context, versionType sdkmSDKVersion.VersionType, sdkVersions []sdkmSDKVersion.SDKVersion,
 ) {
 	receiver.sdkVersions.Store(versionType, sdkVersions)
 

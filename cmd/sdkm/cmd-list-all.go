@@ -1,26 +1,26 @@
-package root
+package sdkm
 
 import (
 	"log"
 	"strings"
 
-	"github.com/dev.itbasis.sdkm/pkg/plugin"
-	"github.com/dev.itbasis.sdkm/plugins"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
+	sdkmPlugins "github.com/dev.itbasis.sdkm/plugins"
 	"github.com/spf13/cobra"
 )
 
 var CmdListAll = &cobra.Command{
-	Use:        "all {" + strings.Join(plugins.PluginNames, "|") + "} [<version>]",
+	Use:        "all {" + strings.Join(sdkmPlugins.PluginNames, "|") + "} [<version>]",
 	Short:      "List all versions",
 	ArgAliases: []string{"plugin", "version"},
-	Args:       cobra.MatchAll(cobra.RangeArgs(1, 2), cobra.OnlyValidArgs), //nolint:mnd //
+	Args:       cobra.MatchAll(cobra.RangeArgs(1, 2), cobra.OnlyValidArgs), //nolint:mnd // TODO
 	Run: func(cmd *cobra.Command, args []string) {
-		getPluginFunc, ok := plugins.Plugins[args[0]]
+		getPluginFunc, ok := sdkmPlugins.Plugins[args[0]]
 		if !ok {
 			log.Fatalf("plugin %s not found", args[0])
 		}
 
-		var sdkVersions []plugin.SDKVersion
+		var sdkVersions []sdkmSDKVersion.SDKVersion
 
 		if len(args) == 1 {
 			sdkVersions = getPluginFunc().ListAllVersions(cmd.Context())

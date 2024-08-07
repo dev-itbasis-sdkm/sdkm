@@ -20,7 +20,7 @@ func (receiver *basePlugin) Exec(
 	)
 
 	for _, v := range osEnviron {
-		env := strings.SplitN(v, "=", 2) //nolint:mnd //
+		env := strings.SplitN(v, "=", 2) //nolint:mnd // TODO
 		envMap[env[0]] = env[1]
 	}
 
@@ -40,7 +40,7 @@ func (receiver *basePlugin) Exec(
 		return err
 	}
 
-	cmd := exec.Command(args[0], args[1:]...) //nolint:gosec
+	cmd := exec.Command(args[0], args[1:]...) //nolint:gosec // TODO
 	cmd.Stdin = stdIn
 	cmd.Stdout = stdOut
 	cmd.Stderr = stdErr

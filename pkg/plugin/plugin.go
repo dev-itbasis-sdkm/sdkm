@@ -3,24 +3,26 @@ package plugin
 import (
 	"context"
 	"io"
+
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
 type GetPluginFunc func() SDKMPlugin
 
-//nolint:interfacebloat
+//nolint:interfacebloat // TODO
 //go:generate mockgen -source=$GOFILE -package=$GOPACKAGE -destination=plugin.mock.go
 type SDKMPlugin interface {
-	WithVersions(versions SDKVersions) SDKMPlugin
+	WithVersions(versions sdkmSDKVersion.SDKVersions) SDKMPlugin
 	WithBasePlugin(basePlugin BasePlugin) SDKMPlugin
 	// WithDownloader(downloader) SDKMPlugin
 
-	ListAllVersions(ctx context.Context) []SDKVersion
-	ListAllVersionsByPrefix(ctx context.Context, prefix string) []SDKVersion
+	ListAllVersions(ctx context.Context) []sdkmSDKVersion.SDKVersion
+	ListAllVersionsByPrefix(ctx context.Context, prefix string) []sdkmSDKVersion.SDKVersion
 
-	LatestVersion(ctx context.Context) SDKVersion
-	LatestVersionByPrefix(ctx context.Context, prefix string) (SDKVersion, error)
+	LatestVersion(ctx context.Context) sdkmSDKVersion.SDKVersion
+	LatestVersionByPrefix(ctx context.Context, prefix string) (sdkmSDKVersion.SDKVersion, error)
 
-	Current(ctx context.Context, baseDir string) (SDKVersion, error)
+	Current(ctx context.Context, baseDir string) (sdkmSDKVersion.SDKVersion, error)
 
 	Install(ctx context.Context, baseDir string) error
 	InstallVersion(ctx context.Context, version string) error

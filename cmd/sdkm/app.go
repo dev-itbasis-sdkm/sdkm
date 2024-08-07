@@ -1,14 +1,20 @@
-package main
+package sdkm
 
 import (
 	"log/slog"
 	"os"
 
-	"github.com/dev.itbasis.sdkm/cmd/sdkm/root"
 	"github.com/dusted-go/logging/prettylog"
 )
 
-func main() {
+type App struct {
+}
+
+func NewApp() *App {
+	return &App{}
+}
+
+func (receiver *App) Run() {
 	logger := slog.New(
 		prettylog.New(
 			&slog.HandlerOptions{Level: slog.LevelDebug},
@@ -18,5 +24,5 @@ func main() {
 	)
 	slog.SetDefault(logger)
 
-	_ = root.CmdRoot.Execute()
+	_ = cmdRoot.Execute()
 }

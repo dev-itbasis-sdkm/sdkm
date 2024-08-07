@@ -17,7 +17,7 @@ var _ = ginkgo.Describe(
 					downloader.NewDownloader(os, arch, pluginGoConsts.URLReleases, ginkgo.GinkgoT().TempDir()).
 						URLForDownload(version),
 				).
-					Should(gomega.Equal(wantURL))
+					To(gomega.Equal(wantURL))
 			},
 			// stable
 			ginkgo.Entry(nil, "darwin", "amd64", "1.22.5", "https://go.dev/dl/go1.22.5.darwin-amd64.tar.gz"),

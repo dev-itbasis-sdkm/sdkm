@@ -7,6 +7,7 @@ import (
 	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"
 	sdkmPluginGo "github.com/dev.itbasis.sdkm/internal/plugins/golang"
 	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/onsi/gomega/gstruct"
@@ -31,9 +32,9 @@ var _ = ginkgo.Describe(
 			func() {
 				mockController := gomock.NewController(ginkgo.GinkgoT())
 
-				mockSDKVersions := sdkmPlugin.NewMockSDKVersions(mockController)
+				mockSDKVersions := sdkmSDKVersion.NewMockSDKVersions(mockController)
 				mockSDKVersions.EXPECT().AllVersions(gomock.Any()).Return(
-					[]sdkmPlugin.SDKVersion{
+					[]sdkmSDKVersion.SDKVersion{
 						{ID: "1.22.5"},
 						{ID: "1.22.4"},
 						{ID: "1.22.3"},
@@ -61,10 +62,10 @@ var _ = ginkgo.Describe(
 					MaxTimes(2)
 
 				baseDir := path.Join(sdkmOs.Pwd(), "testdata/current", testData.dir)
-				gomega.Expect(baseDir).Should(gomega.BeADirectory())
+				gomega.Expect(baseDir).To(gomega.BeADirectory())
 
 				gomega.Expect(pluginGo.Current(context.Background(), baseDir)).
-					Should(
+					To(
 						gomega.HaveValue(
 							gstruct.MatchFields(
 								gstruct.IgnoreExtras, gstruct.Fields{

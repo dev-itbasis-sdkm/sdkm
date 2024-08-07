@@ -12,7 +12,7 @@ import (
 
 	sdkmLog "github.com/dev.itbasis.sdkm/internal/log"
 	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"
-	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 	"github.com/itbasis/go-clock/v2"
 )
 
@@ -22,7 +22,7 @@ const (
 
 type fileCache struct {
 	Updated  fileCacheUpdated
-	Versions map[sdkmPlugin.VersionType][]sdkmPlugin.SDKVersion
+	Versions map[sdkmSDKVersion.VersionType][]sdkmSDKVersion.SDKVersion
 }
 
 func (receiver *sdkVersions) loadFromFile() {
@@ -52,7 +52,7 @@ func (receiver *sdkVersions) loadFromFile() {
 
 	bytes, errReadFile := os.ReadFile(filePath)
 	if errReadFile != nil {
-		log.Fatalln(errReadFile) //nolint:gocritic
+		log.Fatalln(errReadFile) //nolint:gocritic // TODO
 	}
 
 	var fileCacheForSave fileCache
@@ -79,7 +79,7 @@ func (receiver *sdkVersions) saveToFile(ctx context.Context) {
 
 		fileCacheForSave = fileCache{
 			Updated:  fileCacheUpdated(now),
-			Versions: map[sdkmPlugin.VersionType][]sdkmPlugin.SDKVersion{},
+			Versions: map[sdkmSDKVersion.VersionType][]sdkmSDKVersion.SDKVersion{},
 		}
 	)
 
@@ -87,7 +87,7 @@ func (receiver *sdkVersions) saveToFile(ctx context.Context) {
 
 	receiver.sdkVersions.Range(
 		func(key, value any) bool {
-			fileCacheForSave.Versions[key.(sdkmPlugin.VersionType)] = value.([]sdkmPlugin.SDKVersion)
+			fileCacheForSave.Versions[key.(sdkmSDKVersion.VersionType)] = value.([]sdkmSDKVersion.SDKVersion)
 
 			return true
 		},

@@ -4,21 +4,21 @@ import (
 	"context"
 	"strings"
 
-	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
-func (receiver *goPlugin) ListAllVersions(ctx context.Context) []sdkmPlugin.SDKVersion {
+func (receiver *goPlugin) ListAllVersions(ctx context.Context) []sdkmSDKVersion.SDKVersion {
 	return receiver.sdkVersions.AllVersions(ctx)
 }
 
-func (receiver *goPlugin) ListAllVersionsByPrefix(ctx context.Context, prefix string) []sdkmPlugin.SDKVersion {
+func (receiver *goPlugin) ListAllVersionsByPrefix(ctx context.Context, prefix string) []sdkmSDKVersion.SDKVersion {
 	allVersions := receiver.sdkVersions.AllVersions(ctx)
 
 	if prefix == "" {
 		return allVersions
 	}
 
-	var versions []sdkmPlugin.SDKVersion
+	var versions []sdkmSDKVersion.SDKVersion
 
 	for _, sdkVersion := range allVersions {
 		if strings.HasPrefix(sdkVersion.ID, prefix) {

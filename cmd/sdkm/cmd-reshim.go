@@ -1,4 +1,4 @@
-package root
+package sdkm
 
 import (
 	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"

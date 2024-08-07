@@ -14,6 +14,7 @@ import (
 	io "io"
 	reflect "reflect"
 
+	sdkversion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -41,10 +42,10 @@ func (m *MockSDKMPlugin) EXPECT() *MockSDKMPluginMockRecorder {
 }
 
 // Current mocks base method.
-func (m *MockSDKMPlugin) Current(ctx context.Context, baseDir string) (SDKVersion, error) {
+func (m *MockSDKMPlugin) Current(ctx context.Context, baseDir string) (sdkversion.SDKVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Current", ctx, baseDir)
-	ret0, _ := ret[0].(SDKVersion)
+	ret0, _ := ret[0].(sdkversion.SDKVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -127,10 +128,10 @@ func (mr *MockSDKMPluginMockRecorder) InstallVersion(ctx, version any) *gomock.C
 }
 
 // LatestVersion mocks base method.
-func (m *MockSDKMPlugin) LatestVersion(ctx context.Context) SDKVersion {
+func (m *MockSDKMPlugin) LatestVersion(ctx context.Context) sdkversion.SDKVersion {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LatestVersion", ctx)
-	ret0, _ := ret[0].(SDKVersion)
+	ret0, _ := ret[0].(sdkversion.SDKVersion)
 	return ret0
 }
 
@@ -141,10 +142,10 @@ func (mr *MockSDKMPluginMockRecorder) LatestVersion(ctx any) *gomock.Call {
 }
 
 // LatestVersionByPrefix mocks base method.
-func (m *MockSDKMPlugin) LatestVersionByPrefix(ctx context.Context, prefix string) (SDKVersion, error) {
+func (m *MockSDKMPlugin) LatestVersionByPrefix(ctx context.Context, prefix string) (sdkversion.SDKVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LatestVersionByPrefix", ctx, prefix)
-	ret0, _ := ret[0].(SDKVersion)
+	ret0, _ := ret[0].(sdkversion.SDKVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,10 +157,10 @@ func (mr *MockSDKMPluginMockRecorder) LatestVersionByPrefix(ctx, prefix any) *go
 }
 
 // ListAllVersions mocks base method.
-func (m *MockSDKMPlugin) ListAllVersions(ctx context.Context) []SDKVersion {
+func (m *MockSDKMPlugin) ListAllVersions(ctx context.Context) []sdkversion.SDKVersion {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListAllVersions", ctx)
-	ret0, _ := ret[0].([]SDKVersion)
+	ret0, _ := ret[0].([]sdkversion.SDKVersion)
 	return ret0
 }
 
@@ -170,10 +171,10 @@ func (mr *MockSDKMPluginMockRecorder) ListAllVersions(ctx any) *gomock.Call {
 }
 
 // ListAllVersionsByPrefix mocks base method.
-func (m *MockSDKMPlugin) ListAllVersionsByPrefix(ctx context.Context, prefix string) []SDKVersion {
+func (m *MockSDKMPlugin) ListAllVersionsByPrefix(ctx context.Context, prefix string) []sdkversion.SDKVersion {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListAllVersionsByPrefix", ctx, prefix)
-	ret0, _ := ret[0].([]SDKVersion)
+	ret0, _ := ret[0].([]sdkversion.SDKVersion)
 	return ret0
 }
 
@@ -198,7 +199,7 @@ func (mr *MockSDKMPluginMockRecorder) WithBasePlugin(basePlugin any) *gomock.Cal
 }
 
 // WithVersions mocks base method.
-func (m *MockSDKMPlugin) WithVersions(versions SDKVersions) SDKMPlugin {
+func (m *MockSDKMPlugin) WithVersions(versions sdkversion.SDKVersions) SDKMPlugin {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "WithVersions", versions)
 	ret0, _ := ret[0].(SDKMPlugin)

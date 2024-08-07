@@ -16,7 +16,7 @@ func (receiver *fileCacheUpdated) UnmarshalJSON(data []byte) error {
 
 	t, err := time.Parse(fileCacheUpdatedFormat, s)
 	if err != nil {
-		return err //nolint:wrapcheck //
+		return err //nolint:wrapcheck // TODO
 	}
 
 	*receiver = fileCacheUpdated(t)

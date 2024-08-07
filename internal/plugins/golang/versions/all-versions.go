@@ -3,17 +3,17 @@ package versions
 import (
 	"context"
 
-	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
-func (receiver *versions) AllVersions(ctx context.Context) []sdkmPlugin.SDKVersion {
-	receiver.parseVersions(ctx, sdkmPlugin.TypeStable, receiver.reStableGroupVersions, false)
-	receiver.parseVersions(ctx, sdkmPlugin.TypeUnstable, receiver.reUnstableGroupVersions, false)
-	receiver.parseVersions(ctx, sdkmPlugin.TypeArchived, receiver.reArchivedGroupVersions, true)
+func (receiver *versions) AllVersions(ctx context.Context) []sdkmSDKVersion.SDKVersion {
+	receiver.parseVersions(ctx, sdkmSDKVersion.TypeStable, receiver.reStableGroupVersions, false)
+	receiver.parseVersions(ctx, sdkmSDKVersion.TypeUnstable, receiver.reUnstableGroupVersions, false)
+	receiver.parseVersions(ctx, sdkmSDKVersion.TypeArchived, receiver.reArchivedGroupVersions, true)
 
-	var sdkVersions []sdkmPlugin.SDKVersion
+	var sdkVersions []sdkmSDKVersion.SDKVersion
 
-	for _, versionType := range []sdkmPlugin.VersionType{sdkmPlugin.TypeStable, sdkmPlugin.TypeUnstable, sdkmPlugin.TypeArchived} {
+	for _, versionType := range []sdkmSDKVersion.VersionType{sdkmSDKVersion.TypeStable, sdkmSDKVersion.TypeUnstable, sdkmSDKVersion.TypeArchived} {
 		v := receiver.cache.Load(ctx, versionType)
 		if len(v) == 0 {
 			continue

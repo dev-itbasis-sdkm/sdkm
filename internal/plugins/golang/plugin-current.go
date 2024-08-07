@@ -4,17 +4,17 @@ import (
 	"context"
 
 	"github.com/dev.itbasis.sdkm/internal/plugins/golang/modfile"
-	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
-func (receiver *goPlugin) Current(ctx context.Context, baseDir string) (sdkmPlugin.SDKVersion, error) {
+func (receiver *goPlugin) Current(ctx context.Context, baseDir string) (sdkmSDKVersion.SDKVersion, error) {
 	goModFile, errGoModFile := modfile.ReadGoModFile(baseDir)
 	if errGoModFile != nil {
-		return sdkmPlugin.SDKVersion{}, errGoModFile //nolint:wrapcheck
+		return sdkmSDKVersion.SDKVersion{}, errGoModFile //nolint:wrapcheck // TODO
 	}
 
 	var (
-		sdkVersion sdkmPlugin.SDKVersion
+		sdkVersion sdkmSDKVersion.SDKVersion
 		err        error
 	)
 
@@ -25,7 +25,7 @@ func (receiver *goPlugin) Current(ctx context.Context, baseDir string) (sdkmPlug
 	}
 
 	if err != nil {
-		return sdkmPlugin.SDKVersion{}, err //nolint:wrapcheck
+		return sdkmSDKVersion.SDKVersion{}, err //nolint:wrapcheck // TODO
 	}
 
 	receiver.enrichSDKVersion(&sdkVersion)

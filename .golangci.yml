@@ -2,7 +2,34 @@
 run:
   concurrency: 4
 
+issues:
+  exclude-dirs:
+    - testdata
+
 # https://golangci-lint.run/usage/configuration/#linters-configuration
+linters-settings:
+  gosec:
+    exclude-generated: true
+    severity: medium
+  varnamelen:
+    ignore-type-assert-ok: true
+    ignore-map-index-ok: true
+    ignore-names:
+      - db
+      - err
+  ginkgolinter:
+    force-expect-to: true
+    validate-async-intervals: true
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+  lll:
+    line-length: 150
+
 linters:
   disable-all: true
   enable:
@@ -29,7 +56,11 @@ linters:
     - err113
     - goimports
     - mnd
+    - lll
     - gomoddirectives
+    - goprintffuncname
+    #    - gochecknoinits
+    - goconst
     - gosec
     - govet
     - grouper
@@ -56,14 +87,5 @@ linters:
     - wsl
     - ginkgolinter
     - interfacebloat
-
-linters-settings:
-  gosec:
-    exclude-generated: true
-    severity: medium
-  varnamelen:
-    ignore-type-assert-ok: true
-    ignore-map-index-ok: true
-    ignore-names:
-      - db
-      - err
+    - nonamedreturns
+    - stylecheck

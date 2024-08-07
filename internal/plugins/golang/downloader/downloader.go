@@ -17,14 +17,14 @@ import (
 )
 
 type Downloader struct {
+	httpClient *http.Client
+
 	urlReleases string
 
 	os   string
 	arch string
 
 	sdkDir string
-
-	httpClient *http.Client
 }
 
 func NewDownloader(os, arch, urlReleases, sdkDir string) *Downloader {
@@ -37,7 +37,7 @@ func NewDownloader(os, arch, urlReleases, sdkDir string) *Downloader {
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
 				slog.Debug(fmt.Sprintf("'%s' redirect to '%s'...", via[0].URL, req.URL))
 
-				if len(via) >= 10 { //nolint:mnd //
+				if len(via) >= 10 { //nolint:mnd // TODO
 					return errors.New("too many redirects")
 				}
 
@@ -68,7 +68,7 @@ func (receiver *Downloader) Download(version string) (string, error) {
 
 	slog.Info(fmt.Sprintf("downloading '%s' to '%s'", url, outFilePath))
 
-	//nolint:noctx
+	//nolint:noctx // TODO
 	resp, errResp := receiver.httpClient.Get(url)
 	if errResp != nil {
 		return "", errors.Wrap(plugin.ErrDownloadFailed, errResp.Error())

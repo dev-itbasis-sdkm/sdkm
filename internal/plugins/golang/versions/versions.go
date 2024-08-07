@@ -14,7 +14,7 @@ import (
 	"github.com/dev.itbasis.sdkm/internal/cache"
 	sdkmLog "github.com/dev.itbasis.sdkm/internal/log"
 	pluginGoConsts "github.com/dev.itbasis.sdkm/internal/plugins/golang/consts"
-	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
 type versions struct {
@@ -31,17 +31,17 @@ type versions struct {
 	reArchivedGroupVersions *regexp.Regexp
 	reGoVersion             *regexp.Regexp
 
-	cache sdkmPlugin.SDKVersionsCache
+	cache sdkmSDKVersion.SDKVersionsCache
 }
 
-func NewVersions(urlReleases string) sdkmPlugin.SDKVersions {
+func NewVersions(urlReleases string) sdkmSDKVersion.SDKVersions {
 	return &versions{
 		urlReleases: urlReleases,
 		cache: cache.NewCacheSDKVersions().
-			WithFile(sdkmPlugin.GetCacheFilePath(pluginGoConsts.PluginName)),
+			WithFile(sdkmSDKVersion.GetCacheFilePath(pluginGoConsts.PluginName)),
 
 		httpClient: &http.Client{
-			Timeout: 5 * time.Second, //nolint:mnd //
+			Timeout: 5 * time.Second, //nolint:mnd // TODO
 		},
 		reStableGroupVersions:   regexp.MustCompile(`<h2 id="stable">.*?<h2 id=`),
 		reUnstableGroupVersions: regexp.MustCompile(`<h2 id="unstable">.*?<div.*?id="archive"`),
@@ -50,7 +50,7 @@ func NewVersions(urlReleases string) sdkmPlugin.SDKVersions {
 	}
 }
 
-func (receiver *versions) WithCache(cache sdkmPlugin.SDKVersionsCache) sdkmPlugin.SDKVersions {
+func (receiver *versions) WithCache(cache sdkmSDKVersion.SDKVersionsCache) sdkmSDKVersion.SDKVersions {
 	receiver.cache = cache
 
 	return receiver
@@ -59,9 +59,9 @@ func (receiver *versions) WithCache(cache sdkmPlugin.SDKVersionsCache) sdkmPlugi
 func (receiver *versions) getContent(url string) (string, error) {
 	slog.Debug(fmt.Sprintf("getting content for url: %s", url))
 
-	resp, err := receiver.httpClient.Get(url) //nolint:noctx
-	if err != nil {
-		return "", err //nolint:wrapcheck //
+	resp, errGet := receiver.httpClient.Get(url) //nolint:noctx // TODO
+	if errGet != nil {
+		return "", errGet //nolint:wrapcheck // TODO
 	}
 
 	defer func() {
@@ -70,14 +70,14 @@ func (receiver *versions) getContent(url string) (string, error) {
 		}
 	}()
 
-	body, err := io.ReadAll(resp.Body)
+	body, errReadAll := io.ReadAll(resp.Body)
 
-	return strings.ReplaceAll(string(body), "\n", ""), err
+	return strings.ReplaceAll(string(body), "\n", ""), errReadAll
 }
 
 func (receiver *versions) parseVersions(
 	ctx context.Context,
-	versionType sdkmPlugin.VersionType,
+	versionType sdkmSDKVersion.VersionType,
 	reGroupVersions *regexp.Regexp,
 	cleanContent bool,
 ) {
@@ -105,11 +105,11 @@ func (receiver *versions) parseVersions(
 
 	submatch := receiver.reGoVersion.FindAllStringSubmatch(content, -1)
 
-	var sdkVersions = make([]sdkmPlugin.SDKVersion, len(submatch))
+	var sdkVersions = make([]sdkmSDKVersion.SDKVersion, len(submatch))
 
 	for i, row := range submatch {
 		if row[1] != "" {
-			sdkVersion := sdkmPlugin.SDKVersion{ID: row[1], Type: versionType}
+			sdkVersion := sdkmSDKVersion.SDKVersion{ID: row[1], Type: versionType}
 
 			sdkVersions[i] = sdkVersion
 		}

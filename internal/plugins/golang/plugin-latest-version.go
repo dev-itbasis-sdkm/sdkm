@@ -7,14 +7,15 @@ import (
 	"strings"
 
 	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 	"github.com/pkg/errors"
 )
 
-func (receiver *goPlugin) LatestVersion(ctx context.Context) sdkmPlugin.SDKVersion {
+func (receiver *goPlugin) LatestVersion(ctx context.Context) sdkmSDKVersion.SDKVersion {
 	return receiver.sdkVersions.LatestVersion(ctx)
 }
 
-func (receiver *goPlugin) LatestVersionByPrefix(ctx context.Context, prefix string) (sdkmPlugin.SDKVersion, error) {
+func (receiver *goPlugin) LatestVersionByPrefix(ctx context.Context, prefix string) (sdkmSDKVersion.SDKVersion, error) {
 	slog.Debug(fmt.Sprintf("searching for latest version by prefix: %s", prefix))
 
 	if prefix == "" {
@@ -29,7 +30,7 @@ func (receiver *goPlugin) LatestVersionByPrefix(ctx context.Context, prefix stri
 		}
 	}
 
-	return sdkmPlugin.SDKVersion{}, errors.Wrap(
+	return sdkmSDKVersion.SDKVersion{}, errors.Wrap(
 		sdkmPlugin.ErrSDKVersionNotFound, fmt.Sprintf("version by prefix %s", prefix),
 	)
 }

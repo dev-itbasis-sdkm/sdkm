@@ -1,4 +1,4 @@
-package root
+package sdkm
 
 import (
 	"os"
@@ -26,6 +26,8 @@ var cmdCurrent = &cobra.Command{
 			cmd.PrintErr(err)
 			os.Exit(1)
 		}
+
+		cmd.Println(sdkVersion.PrintWithOptions(false, true, true))
 
 		cmd.Print(sdkVersion.ID)
 		if !sdkVersion.Installed {

@@ -8,13 +8,14 @@ import (
 	pluginsGoDownloader "github.com/dev.itbasis.sdkm/internal/plugins/golang/downloader"
 	pluginGoVersions "github.com/dev.itbasis.sdkm/internal/plugins/golang/versions"
 	sdkmPlugin "github.com/dev.itbasis.sdkm/pkg/plugin"
+	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
 type goPlugin struct {
 	sdkmPlugin.SDKMPlugin
 
 	basePlugin  sdkmPlugin.BasePlugin
-	sdkVersions sdkmPlugin.SDKVersions
+	sdkVersions sdkmSDKVersion.SDKVersions
 	downloader  *pluginsGoDownloader.Downloader
 }
 
@@ -41,13 +42,13 @@ func (receiver *goPlugin) WithBasePlugin(basePlugin sdkmPlugin.BasePlugin) sdkmP
 	return receiver
 }
 
-func (receiver *goPlugin) WithVersions(versions sdkmPlugin.SDKVersions) sdkmPlugin.SDKMPlugin {
+func (receiver *goPlugin) WithVersions(versions sdkmSDKVersion.SDKVersions) sdkmPlugin.SDKMPlugin {
 	receiver.sdkVersions = versions
 
 	return receiver
 }
 
-func (receiver *goPlugin) enrichSDKVersion(sdkVersion *sdkmPlugin.SDKVersion) {
+func (receiver *goPlugin) enrichSDKVersion(sdkVersion *sdkmSDKVersion.SDKVersion) {
 	if sdkVersion == nil {
 		return
 	}

@@ -1,4 +1,4 @@
-package root
+package sdkm
 
 import (
 	"os"
@@ -13,7 +13,7 @@ var cmdEnv = &cobra.Command{
 	Use:        "env {" + strings.Join(sdkmPlugins.PluginNames, "|") + "} [<version>]",
 	Short:      "Displays environment variables inside the environment used for the plugin",
 	ArgAliases: []string{"plugin", "version"},
-	Args:       cobra.MatchAll(cobra.RangeArgs(1, 2), cobra.OnlyValidArgs), //nolint:mnd //
+	Args:       cobra.MatchAll(cobra.RangeArgs(1, 2), cobra.OnlyValidArgs), //nolint:mnd // TODO
 	Run: func(cmd *cobra.Command, args []string) {
 		getPluginFunc, ok := sdkmPlugins.Plugins[args[0]]
 		if !ok {
@@ -23,7 +23,7 @@ var cmdEnv = &cobra.Command{
 
 		sdkmPlugin := getPluginFunc()
 
-		//nolint:mnd //
+		//nolint:mnd // TODO
 		if len(args) >= 2 {
 			for k, v := range sdkmPlugin.EnvByVersion(cmd.Context(), args[1]) {
 				cmd.Printf("%s=%s\n", k, v)
