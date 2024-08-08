@@ -1,0 +1,5 @@
+= v2024.08-beta-04
+:icons: font
+
+[no-bullet]
+- icon:wrench[] Fixed #1
