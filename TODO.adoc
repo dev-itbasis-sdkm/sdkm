@@ -1,0 +1,10 @@
+= TODO
+
+* [ ] Add JVM
+** [ ] link:https://adoptium.net/[Eclipse JDK]
+** [ ] link:https://axiomjdk.ru[Axiom JDK]
+** [ ] link:https://jdk.java.net/[OpenJDK]
+** ...
+* [ ] Write a comparison with link:https://github.com/asdf-vm/asdf[asdf]
+* [ ] Write a comparison with link:https://mise.jdx.dev/[mise]
+* [ ] Publish releases with link:https://github.com/goreleaser/goreleaser[goreleaser]
