@@ -28,8 +28,8 @@ go-unit-tests: before-reports
 	ginkgo -race --cover --coverprofile="ginkgo-coverage-unit.out" --junit-report="junit-report.xml" ./...
 	grep -v ".mock.go" "ginkgo-coverage-unit.out" >"${REPORTS_DIR}/ginkgo-coverage-unit.out"
 	cp "junit-report.xml" "${REPORTS_DIR}/junit-report.xml"
-	go tool cover -func "${REPORTS_DIR}/ginkgo-coverage-unit.clean.out" -o "${REPORTS_DIR}/coverage-unit.out"
-	go tool cover -html "${REPORTS_DIR}/ginkgo-coverage-unit.clean.out" -o "${REPORTS_DIR}/coverage-unit.html"
+	go tool cover -func "${REPORTS_DIR}/ginkgo-coverage-unit.out" -o "${REPORTS_DIR}/coverage-unit.out"
+	go tool cover -html "${REPORTS_DIR}/ginkgo-coverage-unit.out" -o "${REPORTS_DIR}/coverage-unit.html"
 
 go-prebuild:
 	echo "make target dir for build: ${targetDir}"
