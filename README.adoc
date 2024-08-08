@@ -1,6 +1,9 @@
 = SDK Manager
 :icons: font
 
+image:https://img.shields.io/github/go-mod/go-version/dev-itbasis-sdkm/sdkm[GitHub go.mod Go version]
+image:https://codecov.io/github/dev-itbasis-sdkm/sdkm/graph/badge.svg?token=OQB80UGOBE[link=https://codecov.io/github/dev-itbasis-sdkm/sdkm]
+
 == Install
 
 . Unpack to any directory.
