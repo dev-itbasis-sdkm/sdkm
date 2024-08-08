@@ -3,4 +3,5 @@
 
 [no-bullet]
 - icon:plus[] Added the `debug` flag to the command line
+- icon:wrench[] Fixed bug passing arguments to `exec` command
 - icon:wrench[] Fixed CHANGELOG

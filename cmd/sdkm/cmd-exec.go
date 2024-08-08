@@ -10,10 +10,11 @@ import (
 )
 
 var cmdExec = &cobra.Command{
-	Use:        "exec {" + strings.Join(sdkmPlugins.PluginNames, "|") + "} {<program>} [<args...>]",
-	Short:      "Execute a command in a plugin",
-	Args:       cobra.MatchAll(cobra.MinimumNArgs(2), cobra.OnlyValidArgs), //nolint:mnd // TODO
-	ArgAliases: []string{"plugin", "program"},
+	Use:                "exec {" + strings.Join(sdkmPlugins.PluginNames, "|") + "} {<program>} [<args...>]",
+	Short:              "Execute a command in a plugin",
+	DisableFlagParsing: true,
+	Args:               cobra.MatchAll(cobra.MinimumNArgs(2)), //nolint:mnd // TODO
+	ArgAliases:         []string{"plugin", "program"},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		getPluginFunc, ok := sdkmPlugins.Plugins[args[0]]
 		if !ok {
