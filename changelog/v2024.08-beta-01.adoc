@@ -1,0 +1,10 @@
+= v2024.08-beta-01
+:icons: font
+
+[no-bullet]
+- icon:plus[] Added changelog
+- icon:plus[] Added caching of the SDK versions list. Now the check is performed only once a day
+- icon:plus[] Added hook support for ZSH
+- icon:plus[] Added hook support for Bash
+- icon:wrench[] Optimized tests
+- icon:plus[] Outputting information in code now via slog

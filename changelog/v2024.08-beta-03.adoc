@@ -1,0 +1,6 @@
+= v2024.08-beta-03
+:icons: font
+
+[no-bullet]
+- icon:plus[] Added the `debug` flag to the command line
+- icon:wrench[] Fixed CHANGELOG

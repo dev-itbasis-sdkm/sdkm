@@ -8,3 +8,4 @@
 * [ ] Write a comparison with link:https://github.com/asdf-vm/asdf[asdf]
 * [ ] Write a comparison with link:https://mise.jdx.dev/[mise]
 * [ ] Publish releases with link:https://github.com/goreleaser/goreleaser[goreleaser]
+* [ ] Add support link:https://direnv.net/[direnv]

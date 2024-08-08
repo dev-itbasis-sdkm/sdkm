@@ -9,3 +9,5 @@ sdkm-export-env() {
 }
 
 trap sdkm-export-env
+
+source <($cmd completion bash)

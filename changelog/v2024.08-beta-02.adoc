@@ -1,0 +1,8 @@
+= v2024.08-beta-02
+:icons: font
+
+[no-bullet]
+- icon:wrench[] Fixed output - now the log is output to stderr, and the main information to stdout
+- icon:minus[] Fixed bugs
+- icon:minus[] Removed mock files from the coverage report
+- icon:wrench[] Refactoring GitHub Actions

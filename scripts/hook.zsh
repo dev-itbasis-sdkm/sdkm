@@ -9,3 +9,5 @@ sdkm-export-env() {
 autoload -U add-zsh-hook
 add-zsh-hook chpwd sdkm-export-env
 
+#autoload -U compinit; compinit
+#source <($cmd completion zsh)

@@ -4,16 +4,18 @@
 image:https://img.shields.io/github/go-mod/go-version/dev-itbasis-sdkm/sdkm[GitHub go.mod Go version]
 image:https://codecov.io/github/dev-itbasis-sdkm/sdkm/graph/badge.svg?token=OQB80UGOBE[link=https://codecov.io/github/dev-itbasis-sdkm/sdkm]
 
-== TODO
+== Links
 
-see link:TODO.adoc[]
+* link:TODO.adoc[TODO]
+
+* link:CHANGELOG.adoc[ChangeLog]
 
 == Install
 
 . Unpack to any directory.
 For example, in `$HOME/.sdkm/` (further this path in the documentation will be referred to as
 `SDKM_HOME`)
-. (Optional) Add the path to `$SDKM_HOME` to `PATH` - if you use hooks, this will be done automatically
+. (Optional) Add the path to `$SDKM_HOME` to `PATH` - if you use hooks, this will be done automatically: `export PATH=${SDKM_HOME}:${PATH}`
 . Unpack scripts for shims: `./sdkm reshim`
 . Enjoy icon:smile-o[]
 
