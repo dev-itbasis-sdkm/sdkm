@@ -18,11 +18,14 @@ func (receiver *App) Run() {
 	logger := slog.New(
 		prettylog.New(
 			&slog.HandlerOptions{Level: slog.LevelDebug},
-			prettylog.WithDestinationWriter(os.Stdout),
+			prettylog.WithDestinationWriter(os.Stderr),
 			prettylog.WithColor(),
 		),
 	)
 	slog.SetDefault(logger)
+
+	cmdRoot.SetOut(os.Stdout)
+	cmdRoot.SetErr(os.Stderr)
 
 	_ = cmdRoot.Execute()
 }

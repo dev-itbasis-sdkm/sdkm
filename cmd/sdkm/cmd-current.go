@@ -28,11 +28,5 @@ var cmdCurrent = &cobra.Command{
 		}
 
 		cmd.Println(sdkVersion.PrintWithOptions(false, true, true))
-
-		cmd.Print(sdkVersion.ID)
-		if !sdkVersion.Installed {
-			cmd.Print(" [not installed]")
-		}
-		cmd.Println()
 	},
 }
