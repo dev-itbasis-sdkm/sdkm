@@ -1,6 +1,7 @@
 #file: noinspection SpellCheckingInspection
 run:
   concurrency: 4
+  modules-download-mode: readonly
 
 issues:
   exclude-dirs:

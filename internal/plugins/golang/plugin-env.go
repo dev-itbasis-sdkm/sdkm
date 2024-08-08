@@ -39,11 +39,11 @@ func (receiver *goPlugin) EnvByVersion(_ context.Context, version string) map[st
 		"GOBIN":  goBin,
 		"PATH": fmt.Sprintf(
 			"%s%c%s%c%s%c%s",
-			sdkmOs.ExecutableDir(),
-			os.PathListSeparator,
 			path.Join(receiver.basePlugin.GetSDKVersionDir(pluginGoConsts.PluginName, version), "bin"),
 			os.PathListSeparator,
 			goBin,
+			os.PathListSeparator,
+			sdkmOs.ExecutableDir(),
 			os.PathListSeparator,
 			originPath,
 		),

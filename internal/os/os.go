@@ -3,6 +3,7 @@ package os
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -33,7 +34,10 @@ func UserHomeDir() string {
 
 // CleanEnvPath Removes the sdkm directory from paths
 func CleanEnvPath(envPath string) string {
-	return strings.ReplaceAll(envPath, fmt.Sprintf("%s%c", ExecutableDir(), os.PathListSeparator), "")
+	executableDir := ExecutableDir()
+	slog.Debug(fmt.Sprintf("cleaning env PATH: %s", executableDir))
+
+	return strings.ReplaceAll(envPath, fmt.Sprintf("%s%c", executableDir, os.PathListSeparator), "")
 }
 
 func ExecutableDir() string {
