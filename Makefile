@@ -3,9 +3,11 @@ REPORTS_DIR = build/reports
 all: go-update go-generate go-all-tests go-build-bin go-multiple-os-distributions
 go-all-tests: go-lint go-unit-tests
 
+clean:
+	rm -Rf "${REPORTS_DIR}"
+
 before-reports:
 	mkdir -p "${REPORTS_DIR}"
-	rm -Rf "${REPORTS_DIR}"/*
 
 go-dependencies:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
@@ -23,8 +25,9 @@ go-lint:
 	golangci-lint run
 
 go-unit-tests: before-reports
-	ginkgo -race --cover --coverprofile="${REPORTS_DIR}/ginkgo-coverage-unit.out" --junit-report="${REPORTS_DIR}/junit-report.xml" ./...
-	grep -v ".mock.go" "${REPORTS_DIR}/ginkgo-coverage-unit.out" >"${REPORTS_DIR}/ginkgo-coverage-unit.clean.out"
+	ginkgo -race --cover --coverprofile="ginkgo-coverage-unit.out" --junit-report="junit-report.xml" ./...
+	grep -v ".mock.go" "ginkgo-coverage-unit.out" >"${REPORTS_DIR}/ginkgo-coverage-unit.out"
+	cp "junit-report.xml" "${REPORTS_DIR}/junit-report.xml"
 	go tool cover -func "${REPORTS_DIR}/ginkgo-coverage-unit.clean.out" -o "${REPORTS_DIR}/coverage-unit.out"
 	go tool cover -html "${REPORTS_DIR}/ginkgo-coverage-unit.clean.out" -o "${REPORTS_DIR}/coverage-unit.html"
 
