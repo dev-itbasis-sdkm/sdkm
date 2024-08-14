@@ -3,9 +3,9 @@ package sdkversion_test
 import (
 	"testing"
 
-	sdkmTesting "github.com/dev.itbasis.sdkm/internal/testing"
+	"github.com/itbasis/go-test-utils/v4/ginkgo"
 )
 
 func TestSDKVersionSuite(t *testing.T) {
-	sdkmTesting.InitGinkgoSuite(t, "SDK Version Suite")
+	ginkgo.InitGinkgoSuite(t, "SDK Version Suite")
 }

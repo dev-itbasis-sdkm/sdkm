@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	sdkmTesting "github.com/dev.itbasis.sdkm/internal/testing"
+	"github.com/itbasis/go-test-utils/v4/ginkgo"
 	"github.com/onsi/gomega/ghttp"
 )
 
@@ -13,7 +13,7 @@ import (
 var testHTMLContent string
 
 func TestVersionSuite(t *testing.T) {
-	sdkmTesting.InitGinkgoSuite(t, "Golang Versions Suite")
+	ginkgo.InitGinkgoSuite(t, "Golang Versions Suite")
 }
 
 func testServer() *ghttp.Server {

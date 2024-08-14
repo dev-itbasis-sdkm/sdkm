@@ -90,3 +90,5 @@ linters:
     - interfacebloat
     - nonamedreturns
     - stylecheck
+    - sloglint
+    - nilnil
