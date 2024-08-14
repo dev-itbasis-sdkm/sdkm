@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"fmt"
 	"sync"
 
 	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
@@ -18,6 +19,10 @@ func NewCacheSDKVersions() sdkmSDKVersion.SDKVersionsCache {
 	return &sdkVersions{}
 }
 
+func (receiver *sdkVersions) String() string {
+	return fmt.Sprintf("SDKVersionCache [file=%s]", receiver.filePath)
+}
+
 func (receiver *sdkVersions) WithFile(filePath string) sdkmSDKVersion.SDKVersionsCache {
 	receiver.filePath = filePath
 	receiver.loadFromFile()
@@ -25,9 +30,7 @@ func (receiver *sdkVersions) WithFile(filePath string) sdkmSDKVersion.SDKVersion
 	return receiver
 }
 
-func (receiver *sdkVersions) Load(
-	_ context.Context, versionType sdkmSDKVersion.VersionType,
-) []sdkmSDKVersion.SDKVersion {
+func (receiver *sdkVersions) Load(_ context.Context, versionType sdkmSDKVersion.VersionType) []sdkmSDKVersion.SDKVersion {
 	value, ok := receiver.sdkVersions.Load(versionType)
 	if !ok {
 		return []sdkmSDKVersion.SDKVersion{}

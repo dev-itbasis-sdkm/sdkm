@@ -1,28 +1,29 @@
 package versions_test
 
 import (
-	_ "embed"
+	"embed"
 	"net/http"
 	"testing"
 
+	"github.com/itbasis/go-test-utils/v4/files"
 	"github.com/itbasis/go-test-utils/v4/ginkgo"
 	"github.com/onsi/gomega/ghttp"
 )
 
-//go:embed testdata/all-version.html
-var testHTMLContent string
+//go:embed testdata/*
+var testHTMLContents embed.FS
 
 func TestVersionSuite(t *testing.T) {
 	ginkgo.InitGinkgoSuite(t, "Golang Versions Suite")
 }
 
-func testServer() *ghttp.Server {
+func initFakeServer(testResponseFile string) *ghttp.Server {
 	var server = ghttp.NewServer()
 
 	server.AppendHandlers(
 		ghttp.CombineHandlers(
 			ghttp.VerifyRequest("GET", "/"),
-			ghttp.RespondWith(http.StatusOK, testHTMLContent),
+			ghttp.RespondWith(http.StatusOK, files.ReadFile(testHTMLContents.ReadFile, testResponseFile)),
 		),
 	)
 

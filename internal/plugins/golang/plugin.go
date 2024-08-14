@@ -3,6 +3,7 @@ package golang
 import (
 	"runtime"
 
+	sdkmCache "github.com/dev.itbasis.sdkm/internal/cache"
 	pluginBase "github.com/dev.itbasis.sdkm/internal/plugins/base"
 	pluginGoConsts "github.com/dev.itbasis.sdkm/internal/plugins/golang/consts"
 	pluginsGoDownloader "github.com/dev.itbasis.sdkm/internal/plugins/golang/downloader"
@@ -24,7 +25,10 @@ func GetPlugin() sdkmPlugin.SDKMPlugin {
 	downloader := pluginsGoDownloader.NewDownloader(
 		runtime.GOOS, runtime.GOARCH, pluginGoConsts.URLReleases, basePlugin.GetSDKDir(),
 	)
-	sdkVersions := pluginGoVersions.NewVersions(pluginGoConsts.URLReleases)
+	cache := sdkmCache.NewCacheSDKVersions().
+		WithFile(sdkmSDKVersion.GetCacheFilePath(pluginGoConsts.PluginName))
+
+	sdkVersions := pluginGoVersions.NewVersions(pluginGoConsts.URLReleases).WithCache(cache)
 
 	return &goPlugin{
 		basePlugin:  basePlugin,

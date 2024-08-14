@@ -39,6 +39,8 @@ func (receiver *sdkVersions) loadFromFile() {
 
 	fileInfo, errStat := os.Stat(filePath)
 	if errStat != nil && os.IsNotExist(errStat) {
+		slog.Debug(fmt.Sprintf("cache file not found: %s", filePath))
+
 		return
 	} else if errStat != nil {
 		slog.Error("Error accessing cache file", sdkmLog.Error(errStat))
@@ -47,6 +49,8 @@ func (receiver *sdkVersions) loadFromFile() {
 	}
 
 	if clock.Default.Now().Sub(fileInfo.ModTime()) >= cacheExpirationDuration {
+		slog.Debug(fmt.Sprintf("Cache file is older than %s", cacheExpirationDuration))
+
 		return
 	}
 

@@ -9,6 +9,7 @@ import (
 	"path"
 	"path/filepath"
 
+	sdkmHttp "github.com/dev.itbasis.sdkm/internal/http"
 	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"
 	pluginGoConsts "github.com/dev.itbasis.sdkm/internal/plugins/golang/consts"
 	"github.com/dev.itbasis.sdkm/pkg/plugin"
@@ -33,17 +34,7 @@ func NewDownloader(os, arch, urlReleases, sdkDir string) *Downloader {
 		arch:        arch,
 		urlReleases: urlReleases,
 		sdkDir:      sdkDir,
-		httpClient: &http.Client{
-			CheckRedirect: func(req *http.Request, via []*http.Request) error {
-				slog.Debug(fmt.Sprintf("'%s' redirect to '%s'...", via[0].URL, req.URL))
-
-				if len(via) >= 10 { //nolint:mnd // TODO
-					return errors.New("too many redirects")
-				}
-
-				return nil
-			},
-		},
+		httpClient:  sdkmHttp.NewHTTPClient(),
 	}
 }
 

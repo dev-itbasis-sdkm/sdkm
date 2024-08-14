@@ -3,6 +3,8 @@
 
 include::changelog/dev-version.adoc[]
 
+include::changelog/v2024.08-beta-05.adoc[]
+
 include::changelog/v2024.08-beta-04.adoc[]
 
 include::changelog/v2024.08-beta-03.adoc[]

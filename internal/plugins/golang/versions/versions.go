@@ -9,11 +9,10 @@ import (
 	"regexp"
 	"strings"
 	"sync"
-	"time"
 
-	"github.com/dev.itbasis.sdkm/internal/cache"
+	sdkmCache "github.com/dev.itbasis.sdkm/internal/cache"
+	sdkmHttp "github.com/dev.itbasis.sdkm/internal/http"
 	sdkmLog "github.com/dev.itbasis.sdkm/internal/log"
-	pluginGoConsts "github.com/dev.itbasis.sdkm/internal/plugins/golang/consts"
 	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
 )
 
@@ -37,13 +36,11 @@ type versions struct {
 func NewVersions(urlReleases string) sdkmSDKVersion.SDKVersions {
 	return &versions{
 		urlReleases: urlReleases,
-		cache: cache.NewCacheSDKVersions().
-			WithFile(sdkmSDKVersion.GetCacheFilePath(pluginGoConsts.PluginName)),
+		cache:       sdkmCache.NewCacheSDKVersions(),
 
-		httpClient: &http.Client{
-			Timeout: 5 * time.Second, //nolint:mnd // TODO
-		},
-		reStableGroupVersions:   regexp.MustCompile(`<h2 id="stable">.*?<h2 id=`),
+		httpClient: sdkmHttp.NewHTTPClient(),
+
+		reStableGroupVersions:   regexp.MustCompile(`<h2 id="stable">.*?<h2`),
 		reUnstableGroupVersions: regexp.MustCompile(`<h2 id="unstable">.*?<div.*?id="archive"`),
 		reArchivedGroupVersions: regexp.MustCompile(`id="archive">.+?</article`),
 		reGoVersion:             regexp.MustCompile(`id="go(.+?)"`),
@@ -51,6 +48,8 @@ func NewVersions(urlReleases string) sdkmSDKVersion.SDKVersions {
 }
 
 func (receiver *versions) WithCache(cache sdkmSDKVersion.SDKVersionsCache) sdkmSDKVersion.SDKVersions {
+	slog.Debug(fmt.Sprintf("setting cache: %s", cache))
+
 	receiver.cache = cache
 
 	return receiver
@@ -72,7 +71,11 @@ func (receiver *versions) getContent(url string) (string, error) {
 
 	body, errReadAll := io.ReadAll(resp.Body)
 
-	return strings.ReplaceAll(string(body), "\n", ""), errReadAll
+	content := strings.ReplaceAll(string(body), "\n", "")
+
+	slog.Debug(fmt.Sprintf("received content size: %d", len(content)))
+
+	return content, errReadAll
 }
 
 func (receiver *versions) parseVersions(
@@ -82,14 +85,24 @@ func (receiver *versions) parseVersions(
 	cleanContent bool,
 ) {
 	if len(receiver.cache.Load(ctx, versionType)) > 0 {
+		slog.Debug(fmt.Sprintf("cache hit for version: %s", versionType))
+
 		return
 	}
+
+	slog.Debug(fmt.Sprintf("cache miss for version: %s", versionType))
 
 	receiver.muParsing.Lock()
 	defer receiver.muParsing.Unlock()
 
 	if receiver.contentReleases == "" {
 		receiver.contentReleases, _ = receiver.getContent(receiver.urlReleases)
+
+		// if slog.Default().Enabled(ctx, slog.LevelDebug) {
+		// if err := os.WriteFile(".url-releases.html", []byte(receiver.contentReleases), sdkmOs.DefaultFileMode); err != nil {
+		// 	slog.Error("Error creating .url-releases.html", sdkmLog.Error(err))
+		// }
+		// }
 
 		if cleanContent {
 			defer func() {
@@ -98,14 +111,19 @@ func (receiver *versions) parseVersions(
 		}
 	}
 
-	content := reGroupVersions.FindString(receiver.contentReleases)
+	var content = reGroupVersions.FindString(receiver.contentReleases)
 	if content == "" {
+		slog.Debug(fmt.Sprintf("content is empty for version: %s", versionType))
+
 		return
 	}
 
-	submatch := receiver.reGoVersion.FindAllStringSubmatch(content, -1)
+	slog.Debug(fmt.Sprintf("found groups for version type: %s", versionType))
 
-	var sdkVersions = make([]sdkmSDKVersion.SDKVersion, len(submatch))
+	var (
+		submatch    = receiver.reGoVersion.FindAllStringSubmatch(content, -1)
+		sdkVersions = make([]sdkmSDKVersion.SDKVersion, len(submatch))
+	)
 
 	for i, row := range submatch {
 		if row[1] != "" {
@@ -114,6 +132,8 @@ func (receiver *versions) parseVersions(
 			sdkVersions[i] = sdkVersion
 		}
 	}
+
+	slog.Debug(fmt.Sprintf("found %d SDK versions for version type: %s", len(sdkVersions), versionType))
 
 	receiver.cache.Store(ctx, versionType, sdkVersions)
 }

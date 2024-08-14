@@ -65,6 +65,20 @@ func (mr *MockSDKVersionsCacheMockRecorder) Store(ctx, versionType, sdkVersions 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockSDKVersionsCache)(nil).Store), ctx, versionType, sdkVersions)
 }
 
+// String mocks base method.
+func (m *MockSDKVersionsCache) String() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "String")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// String indicates an expected call of String.
+func (mr *MockSDKVersionsCacheMockRecorder) String() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String", reflect.TypeOf((*MockSDKVersionsCache)(nil).String))
+}
+
 // WithFile mocks base method.
 func (m *MockSDKVersionsCache) WithFile(filePath string) SDKVersionsCache {
 	m.ctrl.T.Helper()

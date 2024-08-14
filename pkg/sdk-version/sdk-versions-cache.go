@@ -2,6 +2,7 @@ package sdkversion
 
 import (
 	"context"
+	"fmt"
 	"path"
 
 	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"
@@ -9,6 +10,8 @@ import (
 
 //go:generate mockgen -source=$GOFILE -package=$GOPACKAGE -destination=sdk-versions-cache.mock.go
 type SDKVersionsCache interface {
+	fmt.Stringer
+
 	WithFile(filePath string) SDKVersionsCache
 
 	Load(ctx context.Context, versionType VersionType) []SDKVersion

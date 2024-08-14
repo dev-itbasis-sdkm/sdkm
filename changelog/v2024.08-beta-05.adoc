@@ -1,0 +1,6 @@
+= v2024.08-beta-05
+:icons: font
+
+[no-bullet]
+- icon:wrench[] Fixed bug getting the latest version in Go plugin
+- icon:wrench[] Improved work with cache

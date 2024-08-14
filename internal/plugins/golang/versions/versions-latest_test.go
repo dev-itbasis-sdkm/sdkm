@@ -2,6 +2,7 @@ package versions_test
 
 import (
 	"context"
+	"path"
 
 	pluginGoVersions "github.com/dev.itbasis.sdkm/internal/plugins/golang/versions"
 	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
@@ -13,13 +14,18 @@ var _ = ginkgo.Describe(
 	"Latest version", func() {
 		defer ginkgo.GinkgoRecover()
 
-		var server = testServer() //nolint:ginkgolinter // TODO
-		defer server.Close()
+		ginkgo.DescribeTable(
+			"different versions of answers", func(testResponseFilePath string, wantSDKVersion sdkmSDKVersion.SDKVersion) {
+				var server = initFakeServer(path.Join("testdata", "all-versions", testResponseFilePath))
+				defer server.Close()
 
-		gomega.Expect(
-			pluginGoVersions.NewVersions(server.URL()).
-				LatestVersion(context.Background()),
-		).
-			To(gomega.Equal(sdkmSDKVersion.SDKVersion{ID: "1.22.5", Type: sdkmSDKVersion.TypeStable}))
+				sdkVersions := pluginGoVersions.NewVersions(server.URL())
+
+				gomega.Expect(sdkVersions.LatestVersion(context.Background())).
+					To(gomega.Equal(wantSDKVersion))
+			},
+			ginkgo.Entry(nil, "001.html", sdkmSDKVersion.SDKVersion{ID: "1.22.5", Type: sdkmSDKVersion.TypeStable}),
+			ginkgo.Entry(nil, "002.html", sdkmSDKVersion.SDKVersion{ID: "1.23.0", Type: sdkmSDKVersion.TypeStable}),
+		)
 	},
 )
