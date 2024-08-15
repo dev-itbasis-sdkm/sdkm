@@ -68,7 +68,7 @@ func (mr *MockSDKVersionsMockRecorder) LatestVersion(ctx any) *gomock.Call {
 }
 
 // WithCache mocks base method.
-func (m *MockSDKVersions) WithCache(cache SDKVersionsCache) SDKVersions {
+func (m *MockSDKVersions) WithCache(cache Cache) SDKVersions {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "WithCache", cache)
 	ret0, _ := ret[0].(SDKVersions)

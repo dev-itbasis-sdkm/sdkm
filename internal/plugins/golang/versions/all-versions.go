@@ -7,9 +7,11 @@ import (
 )
 
 func (receiver *versions) AllVersions(ctx context.Context) []sdkmSDKVersion.SDKVersion {
-	receiver.parseVersions(ctx, sdkmSDKVersion.TypeStable, receiver.reStableGroupVersions, false)
-	receiver.parseVersions(ctx, sdkmSDKVersion.TypeUnstable, receiver.reUnstableGroupVersions, false)
-	receiver.parseVersions(ctx, sdkmSDKVersion.TypeArchived, receiver.reArchivedGroupVersions, true)
+	if !receiver.cache.Valid(ctx) {
+		receiver.parseVersions(ctx, sdkmSDKVersion.TypeStable, receiver.reStableGroupVersions, false)
+		receiver.parseVersions(ctx, sdkmSDKVersion.TypeUnstable, receiver.reUnstableGroupVersions, false)
+		receiver.parseVersions(ctx, sdkmSDKVersion.TypeArchived, receiver.reArchivedGroupVersions, true)
+	}
 
 	var sdkVersions []sdkmSDKVersion.SDKVersion
 

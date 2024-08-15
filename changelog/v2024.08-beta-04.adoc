@@ -2,4 +2,4 @@
 :icons: font
 
 [no-bullet]
-- icon:wrench[] Fixed #1
+- icon:wrench[] Fixed link:https://github.com/dev-itbasis-sdkm/sdkm/issues/1[#1]

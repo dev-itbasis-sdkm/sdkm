@@ -30,13 +30,13 @@ type versions struct {
 	reArchivedGroupVersions *regexp.Regexp
 	reGoVersion             *regexp.Regexp
 
-	cache sdkmSDKVersion.SDKVersionsCache
+	cache sdkmSDKVersion.Cache
 }
 
 func NewVersions(urlReleases string) sdkmSDKVersion.SDKVersions {
 	return &versions{
 		urlReleases: urlReleases,
-		cache:       sdkmCache.NewCacheSDKVersions(),
+		cache:       sdkmCache.NewCache(),
 
 		httpClient: sdkmHttp.NewHTTPClient(),
 
@@ -47,7 +47,7 @@ func NewVersions(urlReleases string) sdkmSDKVersion.SDKVersions {
 	}
 }
 
-func (receiver *versions) WithCache(cache sdkmSDKVersion.SDKVersionsCache) sdkmSDKVersion.SDKVersions {
+func (receiver *versions) WithCache(cache sdkmSDKVersion.Cache) sdkmSDKVersion.SDKVersions {
 	slog.Debug(fmt.Sprintf("setting cache: %s", cache))
 
 	receiver.cache = cache
@@ -65,7 +65,7 @@ func (receiver *versions) getContent(url string) (string, error) {
 
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
-			slog.Warn("Error closing body after receiving content", sdkmLog.Error(err))
+			slog.Warn("AttrError closing body after receiving content", sdkmLog.AttrError(err))
 		}
 	}()
 
@@ -84,25 +84,11 @@ func (receiver *versions) parseVersions(
 	reGroupVersions *regexp.Regexp,
 	cleanContent bool,
 ) {
-	if len(receiver.cache.Load(ctx, versionType)) > 0 {
-		slog.Debug(fmt.Sprintf("cache hit for version: %s", versionType))
-
-		return
-	}
-
-	slog.Debug(fmt.Sprintf("cache miss for version: %s", versionType))
-
 	receiver.muParsing.Lock()
 	defer receiver.muParsing.Unlock()
 
 	if receiver.contentReleases == "" {
 		receiver.contentReleases, _ = receiver.getContent(receiver.urlReleases)
-
-		// if slog.Default().Enabled(ctx, slog.LevelDebug) {
-		// if err := os.WriteFile(".url-releases.html", []byte(receiver.contentReleases), sdkmOs.DefaultFileMode); err != nil {
-		// 	slog.Error("Error creating .url-releases.html", sdkmLog.Error(err))
-		// }
-		// }
 
 		if cleanContent {
 			defer func() {

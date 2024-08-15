@@ -1,0 +1,6 @@
+= v2024.08-beta-06
+:icons: font
+
+[no-bullet]
+- icon:wrench[] Fixed link:https://github.com/dev-itbasis-sdkm/sdkm/issues/5[#5]
+- icon:wrench[] refactoring cache

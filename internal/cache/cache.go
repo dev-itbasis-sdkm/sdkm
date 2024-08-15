@@ -2,49 +2,77 @@ package cache
 
 import (
 	"context"
-	"fmt"
 	"sync"
 
 	sdkmSDKVersion "github.com/dev.itbasis.sdkm/pkg/sdk-version"
+	"golang.org/x/exp/maps"
 )
 
-type sdkVersions struct {
-	filePath  string
+type cache struct {
 	storeLock sync.Mutex
 
-	sdkVersions sync.Map
+	cacheStorage sdkmSDKVersion.CacheStorage
+	cache        map[sdkmSDKVersion.VersionType][]sdkmSDKVersion.SDKVersion
 }
 
-func NewCacheSDKVersions() sdkmSDKVersion.SDKVersionsCache {
-	return &sdkVersions{}
+func NewCache() sdkmSDKVersion.Cache {
+	return &cache{
+		cache: map[sdkmSDKVersion.VersionType][]sdkmSDKVersion.SDKVersion{},
+	}
 }
 
-func (receiver *sdkVersions) String() string {
-	return fmt.Sprintf("SDKVersionCache [file=%s]", receiver.filePath)
+func (receiver *cache) String() string {
+	var result = "SDKVersionCache"
+
+	if receiver.cacheStorage != nil {
+		result = result + " (" + receiver.cacheStorage.String() + ")"
+	}
+
+	return result
 }
 
-func (receiver *sdkVersions) WithFile(filePath string) sdkmSDKVersion.SDKVersionsCache {
-	receiver.filePath = filePath
-	receiver.loadFromFile()
+func (receiver *cache) WithExternalStore(cacheStorage sdkmSDKVersion.CacheStorage) sdkmSDKVersion.Cache {
+	receiver.cacheStorage = cacheStorage
+	maps.Clear(receiver.cache)
 
 	return receiver
 }
 
-func (receiver *sdkVersions) Load(_ context.Context, versionType sdkmSDKVersion.VersionType) []sdkmSDKVersion.SDKVersion {
-	value, ok := receiver.sdkVersions.Load(versionType)
+func (receiver *cache) Valid(ctx context.Context) bool {
+	if receiver.cacheStorage != nil {
+		return receiver.cacheStorage.Valid(ctx)
+	}
+
+	return len(receiver.cache) > 0
+}
+
+func (receiver *cache) Load(ctx context.Context, versionType sdkmSDKVersion.VersionType) []sdkmSDKVersion.SDKVersion {
+	receiver.storeLock.Lock()
+	defer receiver.storeLock.Unlock()
+
+	if cacheStorage := receiver.cacheStorage; cacheStorage != nil {
+		if len(receiver.cache) == 0 || !cacheStorage.Valid(ctx) {
+			receiver.cache = cacheStorage.Load(ctx)
+		}
+	}
+
+	var list, ok = receiver.cache[versionType]
 	if !ok {
 		return []sdkmSDKVersion.SDKVersion{}
 	}
 
-	return value.([]sdkmSDKVersion.SDKVersion)
+	return list
 }
 
-func (receiver *sdkVersions) Store(
+func (receiver *cache) Store(
 	ctx context.Context, versionType sdkmSDKVersion.VersionType, sdkVersions []sdkmSDKVersion.SDKVersion,
 ) {
-	receiver.sdkVersions.Store(versionType, sdkVersions)
+	receiver.storeLock.Lock()
+	defer receiver.storeLock.Unlock()
 
-	if receiver.filePath != "" {
-		receiver.saveToFile(ctx)
+	receiver.cache[versionType] = sdkVersions
+
+	if receiver.cacheStorage != nil {
+		receiver.cacheStorage.Store(ctx, receiver.cache)
 	}
 }

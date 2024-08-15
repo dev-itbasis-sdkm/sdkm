@@ -10,7 +10,9 @@ import (
 )
 
 func (receiver *versions) LatestVersion(ctx context.Context) sdkmSDKVersion.SDKVersion {
-	receiver.parseVersions(ctx, sdkmSDKVersion.TypeStable, receiver.reStableGroupVersions, true)
+	if !receiver.cache.Valid(ctx) {
+		receiver.parseVersions(ctx, sdkmSDKVersion.TypeStable, receiver.reStableGroupVersions, true)
+	}
 
 	v := receiver.cache.Load(ctx, sdkmSDKVersion.TypeStable)
 	if len(v) == 0 {
