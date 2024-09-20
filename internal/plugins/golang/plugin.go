@@ -1,10 +1,12 @@
 package golang
 
 import (
+	"path"
 	"runtime"
 
 	sdkmCache "github.com/dev.itbasis.sdkm/internal/cache"
-	file_storage "github.com/dev.itbasis.sdkm/internal/cache/storage/file-storage"
+	cacheFileStorage "github.com/dev.itbasis.sdkm/internal/cache/storage/file-storage"
+	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"
 	pluginBase "github.com/dev.itbasis.sdkm/internal/plugins/base"
 	pluginGoConsts "github.com/dev.itbasis.sdkm/internal/plugins/golang/consts"
 	pluginsGoDownloader "github.com/dev.itbasis.sdkm/internal/plugins/golang/downloader"
@@ -27,7 +29,7 @@ func GetPlugin() sdkmPlugin.SDKMPlugin {
 		runtime.GOOS, runtime.GOARCH, pluginGoConsts.URLReleases, basePlugin.GetSDKDir(),
 	)
 	cache := sdkmCache.NewCache().
-		WithExternalStore(file_storage.NewFileCacheStorage(pluginGoConsts.PluginName))
+		WithExternalStore(cacheFileStorage.NewFileCacheStorage(pluginGoConsts.PluginName))
 
 	sdkVersions := pluginGoVersions.NewVersions(pluginGoConsts.URLReleases).
 		WithCache(cache)
@@ -61,4 +63,8 @@ func (receiver *goPlugin) enrichSDKVersion(sdkVersion *sdkmSDKVersion.SDKVersion
 
 	sdkVersion.Installed = sdkVersion.Installed ||
 		receiver.basePlugin.HasInstalled(pluginGoConsts.PluginName, sdkVersion.ID)
+}
+
+func (receiver *goPlugin) getGoCacheDir(version string) string {
+	return path.Join(sdkmOs.UserHomeDir(), pluginGoConsts.PluginName, version)
 }

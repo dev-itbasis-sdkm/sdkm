@@ -34,7 +34,7 @@ func (receiver *basePlugin) Exec(
 	}
 
 	envMap["SDKM_BACKUP_PATH"] = envMap["PATH"]
-	envMap["PATH"] = sdkmOs.CleanEnvPath(envMap["PATH"])
+	envMap["PATH"] = sdkmOs.CleanPath(envMap["PATH"], sdkmOs.ExecutableDir())
 
 	if err := os.Setenv("PATH", envMap["PATH"]); err != nil {
 		return err

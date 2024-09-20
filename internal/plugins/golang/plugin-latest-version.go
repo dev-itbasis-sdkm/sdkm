@@ -2,7 +2,6 @@ package golang
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"strings"
 
@@ -16,7 +15,7 @@ func (receiver *goPlugin) LatestVersion(ctx context.Context) sdkmSDKVersion.SDKV
 }
 
 func (receiver *goPlugin) LatestVersionByPrefix(ctx context.Context, prefix string) (sdkmSDKVersion.SDKVersion, error) {
-	slog.Debug(fmt.Sprintf("searching for latest version by prefix: %s", prefix))
+	slog.Debug("searching for latest version by prefix: " + prefix)
 
 	if prefix == "" {
 		return receiver.LatestVersion(ctx), nil
@@ -30,7 +29,5 @@ func (receiver *goPlugin) LatestVersionByPrefix(ctx context.Context, prefix stri
 		}
 	}
 
-	return sdkmSDKVersion.SDKVersion{}, errors.Wrap(
-		sdkmPlugin.ErrSDKVersionNotFound, fmt.Sprintf("version by prefix %s", prefix),
-	)
+	return sdkmSDKVersion.SDKVersion{}, errors.Wrap(sdkmPlugin.ErrSDKVersionNotFound, "version by prefix "+prefix)
 }

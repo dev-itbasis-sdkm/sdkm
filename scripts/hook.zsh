@@ -3,7 +3,9 @@
 cmd="$(dirname ${0})/sdkm"
 
 sdkm-export-env() {
-  export $($cmd env go 2>&1) 1>/dev/null 2>&1
+	$cmd env go 2>&1 | while IFS='' read -r line; do
+		export "${line}" 1>/dev/null 2>&1
+	done
 }
 
 autoload -U add-zsh-hook

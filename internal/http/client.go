@@ -10,11 +10,12 @@ import (
 )
 
 const (
-	timeout     = 5 * time.Second
+	DefaultTimeout = 5 * time.Second
+
 	maxRedirect = 10
 )
 
-func NewHTTPClient() *http.Client {
+func NewHTTPClient(timeout time.Duration) *http.Client {
 	return &http.Client{
 		Timeout: timeout,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {

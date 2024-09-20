@@ -3,7 +3,6 @@ package filestorage
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log/slog"
 	"os"
 	"path"
@@ -36,7 +35,7 @@ func NewFileCacheStorage(pluginName string) sdkmSDKVersion.CacheStorage {
 }
 
 func NewFileCacheStorageCustomPath(filePath string) sdkmSDKVersion.CacheStorage {
-	slog.Debug(fmt.Sprintf("using cache with file path: %s", filePath))
+	slog.Debug("using cache with file path: " + filePath)
 
 	return &fileStorage{filePath: filePath}
 }
@@ -48,17 +47,17 @@ func (receiver *fileStorage) String() string {
 func (receiver *fileStorage) Valid(ctx context.Context) bool {
 	filePath := receiver.filePath
 
-	slog.Debug(fmt.Sprintf("validating with file path: %s", filePath))
+	slog.Debug("validating with file path: " + filePath)
 
 	if filePath == "" {
-		slog.Debug(fmt.Sprintf("file path is empty: %s", filePath))
+		slog.Debug("file path is empty: " + filePath)
 
 		return false
 	}
 
 	fileInfo, errStat := os.Stat(filePath)
 	if errStat != nil && os.IsNotExist(errStat) {
-		slog.Debug(fmt.Sprintf("cache file not found: %s", filePath))
+		slog.Debug("cache file not found: " + filePath)
 
 		return false
 	} else if errStat != nil {
@@ -68,7 +67,7 @@ func (receiver *fileStorage) Valid(ctx context.Context) bool {
 	}
 
 	if clock.FromContext(ctx).Now().Sub(fileInfo.ModTime()) >= cacheExpirationDuration {
-		slog.Debug(fmt.Sprintf("cache file has been expired: %s", filePath))
+		slog.Debug("cache file has been expired: " + filePath)
 
 		return false
 	}
@@ -82,7 +81,7 @@ func (receiver *fileStorage) Load(ctx context.Context) map[sdkmSDKVersion.Versio
 
 	var filePath = receiver.filePath
 
-	slog.Debug(fmt.Sprintf("loading cache from file: %s", filePath))
+	slog.Debug("loading cache from file: " + filePath)
 
 	if !receiver.Valid(ctx) {
 		return emptyLoadResult
@@ -90,7 +89,7 @@ func (receiver *fileStorage) Load(ctx context.Context) map[sdkmSDKVersion.Versio
 
 	var bytes, errReadFile = os.ReadFile(filePath)
 	if errReadFile != nil {
-		slog.Error(fmt.Sprintf("error reading cache file: %s", filePath), sdkmLog.AttrError(errReadFile))
+		slog.Error("error reading cache file: "+filePath, sdkmLog.AttrError(errReadFile))
 
 		return emptyLoadResult
 	}
@@ -107,7 +106,7 @@ func (receiver *fileStorage) Load(ctx context.Context) map[sdkmSDKVersion.Versio
 		return emptyLoadResult
 	}
 
-	slog.Debug(fmt.Sprintf("loaded cache from file: %s", filePath))
+	slog.Debug("loaded cache from file: " + filePath)
 
 	return model.Versions
 }
@@ -118,7 +117,7 @@ func (receiver *fileStorage) Store(ctx context.Context, versions map[sdkmSDKVers
 
 	filePath := receiver.filePath
 
-	slog.Debug(fmt.Sprintf("storing cache to file: %s", filePath))
+	slog.Debug("storing cache to file: " + filePath)
 
 	var bytes, errMarshal = json.Marshal(
 		model{
@@ -139,12 +138,12 @@ func (receiver *fileStorage) Store(ctx context.Context, versions map[sdkmSDKVers
 
 	dir := filepath.Dir(filePath)
 	if errMkdir := os.MkdirAll(dir, sdkmOs.DefaultDirMode); errMkdir != nil {
-		slog.Error(fmt.Sprintf("error creating cache dir: %s", dir), sdkmLog.AttrError(errMkdir))
+		slog.Error("error creating cache dir: "+dir, sdkmLog.AttrError(errMkdir))
 
 		return
 	}
 
 	if errWriteFile := os.WriteFile(filePath, bytes, sdkmOs.DefaultFileMode); errWriteFile != nil {
-		slog.Error(fmt.Sprintf("error writing cache file: %s", filePath), sdkmLog.AttrError(errWriteFile))
+		slog.Error("error writing cache file: "+filePath, sdkmLog.AttrError(errWriteFile))
 	}
 }

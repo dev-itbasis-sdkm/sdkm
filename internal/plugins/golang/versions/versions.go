@@ -38,7 +38,7 @@ func NewVersions(urlReleases string) sdkmSDKVersion.SDKVersions {
 		urlReleases: urlReleases,
 		cache:       sdkmCache.NewCache(),
 
-		httpClient: sdkmHttp.NewHTTPClient(),
+		httpClient: sdkmHttp.NewHTTPClient(sdkmHttp.DefaultTimeout),
 
 		reStableGroupVersions:   regexp.MustCompile(`<h2 id="stable">.*?<h2`),
 		reUnstableGroupVersions: regexp.MustCompile(`<h2 id="unstable">.*?<div.*?id="archive"`),

@@ -27,7 +27,7 @@ func (receiver *goPlugin) Install(ctx context.Context, baseDir string) error {
 
 func (receiver *goPlugin) InstallVersion(_ context.Context, version string) error {
 	if receiver.basePlugin.HasInstalled(pluginGoConsts.PluginName, version) {
-		slog.Info(fmt.Sprintf("SDK already installed: %s", version))
+		slog.Info("SDK already installed: " + version)
 
 		return nil
 	}

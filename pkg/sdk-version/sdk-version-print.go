@@ -30,7 +30,7 @@ func (receiver *SDKVersion) PrintWithOptions(outType, outInstalled, outNotInstal
 		case TypeUnstable, TypeArchived:
 			out += fmt.Sprintf(" (%s)", receiver.Type)
 		default:
-			slog.Error(fmt.Sprintf("unknown SDK version type: %s", receiver.Type))
+			slog.Error("unknown SDK version type: " + string(receiver.Type))
 		}
 	}
 

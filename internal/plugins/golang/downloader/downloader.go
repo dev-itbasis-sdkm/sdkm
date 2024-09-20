@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"time"
 
 	sdkmHttp "github.com/dev.itbasis.sdkm/internal/http"
 	sdkmOs "github.com/dev.itbasis.sdkm/internal/os"
@@ -34,7 +35,7 @@ func NewDownloader(os, arch, urlReleases, sdkDir string) *Downloader {
 		arch:        arch,
 		urlReleases: urlReleases,
 		sdkDir:      sdkDir,
-		httpClient:  sdkmHttp.NewHTTPClient(),
+		httpClient:  sdkmHttp.NewHTTPClient(time.Minute),
 	}
 }
 

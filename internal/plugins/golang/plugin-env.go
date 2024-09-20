@@ -3,6 +3,7 @@ package golang
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 	"path"
 
@@ -20,16 +21,22 @@ func (receiver *goPlugin) Env(ctx context.Context, baseDir string) (map[string]s
 }
 
 func (receiver *goPlugin) EnvByVersion(_ context.Context, version string) map[string]string {
-	goCacheDir := path.Join(sdkmOs.UserHomeDir(), pluginGoConsts.PluginName, version)
-	goBin := path.Join(goCacheDir, "bin")
+	var (
+		goCacheDir = receiver.getGoCacheDir(version)
+		goBin      = path.Join(goCacheDir, "bin")
+		originPath = os.Getenv("SDKM_PATH_ORIGIN")
+	)
 
-	originPath := os.Getenv("SDKM_PATH_ORIGIN")
+	slog.Debug("originPath: " + originPath)
+
 	if originPath == "" {
 		originPath = os.Getenv("PATH")
+
+		slog.Debug("originPath (using env.PATH): " + originPath)
 	}
 
-	envs := map[string]string{
-		"SDKM_PATH_ORIGIN":   os.Getenv("PATH"),
+	var envs = map[string]string{
+		"SDKM_PATH_ORIGIN":   originPath,
 		"SDKM_GOROOT_ORIGIN": os.Getenv("GOROOT"),
 		"SDKM_GOPATH_ORIGIN": os.Getenv("GOPATH"),
 		"SDKM_GOBIN_ORIGIN":  os.Getenv("GOBIN"),
@@ -37,17 +44,15 @@ func (receiver *goPlugin) EnvByVersion(_ context.Context, version string) map[st
 		"GOROOT": receiver.basePlugin.GetSDKVersionDir(pluginGoConsts.PluginName, version),
 		"GOPATH": goCacheDir,
 		"GOBIN":  goBin,
-		"PATH": fmt.Sprintf(
-			"%s%c%s%c%s%c%s",
-			path.Join(receiver.basePlugin.GetSDKVersionDir(pluginGoConsts.PluginName, version), "bin"),
-			os.PathListSeparator,
-			goBin,
-			os.PathListSeparator,
-			sdkmOs.ExecutableDir(),
-			os.PathListSeparator,
+		"PATH": sdkmOs.AddBeforePath(
 			originPath,
+			path.Join(receiver.basePlugin.GetSDKVersionDir(pluginGoConsts.PluginName, version), "bin"),
+			goBin,
+			sdkmOs.ExecutableDir(),
 		),
 	}
+
+	slog.Debug(fmt.Sprintf("envs: %v", envs))
 
 	return envs
 }
