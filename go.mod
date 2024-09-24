@@ -5,7 +5,7 @@ go 1.23.1
 require (
 	github.com/dusted-go/logging v1.3.0
 	github.com/itbasis/go-clock/v2 v2.1.0
-	github.com/itbasis/go-test-utils/v4 v4.1.1
+	github.com/itbasis/go-test-utils/v4 v4.1.2
 	github.com/onsi/ginkgo/v2 v2.20.2
 	github.com/onsi/gomega v1.34.2
 	github.com/pkg/errors v0.9.1
