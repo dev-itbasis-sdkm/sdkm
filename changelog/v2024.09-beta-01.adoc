@@ -1,0 +1,9 @@
+= v2024.09-beta-01
+:icons: font
+
+[no-bullet]
+- icon:wrench[] Bump Go version to 1.23.1
+- icon:wrench[] Fixed link:https://github.com/dev-itbasis-sdkm/sdkm/issues/11[#11]
+- icon:wrench[] Fixed bug with downloading large files
+- icon:wrench[] Optimization of work with logs - redundant parsing of masks has been removed
+- icon:wrench[] Other minor refactorings
