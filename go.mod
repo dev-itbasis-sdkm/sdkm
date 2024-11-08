@@ -12,7 +12,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	go.uber.org/mock v0.4.0
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
-	golang.org/x/mod v0.21.0
+	golang.org/x/mod v0.22.0
 	golift.io/xtractr v0.2.2
 )
 
