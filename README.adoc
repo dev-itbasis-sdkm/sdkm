@@ -4,6 +4,8 @@
 image:https://img.shields.io/github/go-mod/go-version/dev-itbasis-sdkm/sdkm[GitHub go.mod Go version]
 image:https://codecov.io/github/dev-itbasis-sdkm/sdkm/graph/badge.svg?token=OQB80UGOBE[link=https://codecov.io/github/dev-itbasis-sdkm/sdkm]
 
+IMPORTANT: Move to link:https://github.com/itbasis/go-tools/tree/main/sdkm[]
+
 == Links
 
 * link:TODO.adoc[TODO]
